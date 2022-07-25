@@ -6,6 +6,7 @@ global using System.Linq;
 global using System.Threading.Tasks;
 global using System.Windows;
 global using System.ComponentModel;
+global using System.Windows.Input;
 
 namespace WeatherApp
 {
