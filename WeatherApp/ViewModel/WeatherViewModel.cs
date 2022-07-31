@@ -18,6 +18,8 @@ public class WeatherViewModel : INotifyPropertyChanged
         }
     }
 
+    public ObservableCollection<City> Cities { get; set; }
+
     private CurrentConditions currentConditions;
 
     public CurrentConditions CurrentConditions
@@ -39,6 +41,7 @@ public class WeatherViewModel : INotifyPropertyChanged
         {
             selectecCity = value;
             OnPropertyChanged("SelectecCity");
+            GetCurrentCondintions();
         }
     }
 
@@ -58,20 +61,32 @@ public class WeatherViewModel : INotifyPropertyChanged
                 WeatherText = "Partly cloudy",
                 Temperature = new()
                 {
-                    Metric = new() { Value = 21 }
+                    Metric = new() { Value = "21" }
                 }
             };
         }
 
         SearchCommand = new(this);
+        Cities = new ObservableCollection<City>();
+    }
+
+    private async void GetCurrentCondintions()
+    {
+        Query = String.Empty;
+        Cities.Clear();
+        CurrentConditions = await AccuWeatherHelper.GetCurrentConditions(SelectecCity.Key);
     }
 
     public async void MakeQuery()
     {
-        var cities =await AccuWeatherHelper.GetCities(Query);
+        var cities = await AccuWeatherHelper.GetCities(Query);
+
+        Cities.Clear();
+        foreach (City city in cities)
+            Cities.Add(city);
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
     private void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

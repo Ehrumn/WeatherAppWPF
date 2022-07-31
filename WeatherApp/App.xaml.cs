@@ -7,6 +7,7 @@ global using System.Threading.Tasks;
 global using System.Windows;
 global using System.ComponentModel;
 global using System.Windows.Input;
+global using System.Collections.ObjectModel;
 
 namespace WeatherApp
 {
